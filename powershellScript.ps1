@@ -1,4 +1,4 @@
-﻿Write-Output " "
+Write-Output " "
 Write-Output "Timezone:"
 Get-TimeZone | Select DisplayName
 
@@ -37,7 +37,8 @@ Get-WmiObject CIM_PhysicalMemory | Measure-Object -Property capacity -sum | % {[
 ###
 Write-Output " "
 Write-Output "HDD Space: "
-get-wmiobject Win32_LogicalDisk
+$hdd = get-wmiobject Win32_LogicalDisk
+$hdd | Format-Table DeviceID, DriveType, FreeSpace, Size
 
 Write-Output " "
 Write-Output "Programs: "
@@ -60,14 +61,14 @@ Get-NetNeighbor | Select IPAddress, LinkLayerAddress
 
 Write-Output " "
 Write-Output "Interfaces Mac Address"
-Get-NetAdapter | Select Name, InterfaceDescription, MacAddress
+$temp = Get-NetAdapter | Select Name, InterfaceDescription, MacAddress
+$temp | Format-Table -Property Name, InterfaceDescription, MacAddress
+
 
 Write-Output " "
 Write-Output "Route Table"
-$temp = Get-NetRoute
-$temp.ifIndex
-$temp.DestinationPrefix
-$temp.NextHop
+$route = Get-NetRoute
+$route | Format-Table -Property DestinationPrefix, NextHop
 
 Write-Output " "
 Write-Output "IPv4 and IPv6 Address for each Interface"
@@ -80,11 +81,13 @@ Get-WmiObject Win32_NetworkAdapterConfiguration | ? {$_.DHCPEnabled -eq $true -a
 
 Write-Output " "
 Write-Output "DNS Server"
-Get-DnsClientServerAddress -InterfaceAlias "Ethernet0"
+$dns = Get-DnsClientServerAddress
+$dns | Format-Table InterfaceAlias, ServerAddresses
 
 Write-Output " "
 Write-Output "Default Gateway for Interfaces"
-Get-WmiObject Win32_NetworkAdapterConfiguration | Select Description, DefaultIPGateway
+$gateway = Get-WmiObject Win32_NetworkAdapterConfiguration | Select Description, DefaultIPGateway
+$gateway | Format-Table Description, DefaultIPGateway
 
 Write-Output " "
 Write-Output "DNS Cache"
