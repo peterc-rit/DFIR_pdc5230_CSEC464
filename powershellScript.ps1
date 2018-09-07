@@ -15,10 +15,7 @@ Write-Output $Display
 Write-Output " "
 Write-Output "OS Version:"
 $os = [System.Environment]::OSVersion.Version
-Write-Output "Build: " $os.Build
-Write-Output "Major: " $os.Major
-Write-Output "Minor: " $os.Minor
-Write-Output "Revision: " $os.Revision
+$os | Format-Table Build, Major, Minor, Revision
 
 Write-Output " "
 Write-Output "Operating System:"
